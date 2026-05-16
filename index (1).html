@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Hacienda Pantanal — Portal de Reportes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --verde:   #1a7a2e;
+      --verde-l: #2aab42;
+      --verde-bg:#e8f5eb;
+      --naranja:  #d4580a;
+      --naranja-l:#f07020;
+      --naranja-bg:#fdf0e6;
+      --gris:    #f4f1ec;
+      --texto:   #1c1c1c;
+      --sombra:  0 8px 32px rgba(0,0,0,0.13);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Sora', sans-serif;
+      background: var(--gris);
+      color: var(--texto);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100dvh;
+      padding: 0 16px 40px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      padding: 48px 0 32px;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      background: var(--verde);
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 16px rgba(26,122,46,0.35);
+    }
+
+    .logo svg { width: 40px; height: 40px; fill: #fff; }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--verde);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+    }
+
+    header p {
+      margin-top: 8px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #555;
+    }
+
+    /* ── PREGUNTA ── */
+    .pregunta {
+      width: 100%;
+      max-width: 480px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px 20px 20px;
+      box-shadow: var(--sombra);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .pregunta h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .pregunta span {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.9rem;
+      color: #888;
+      font-weight: 400;
+    }
+
+    /* ── TARJETAS ── */
+    .cards {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border-radius: 24px;
+      padding: 36px 24px 32px;
+      text-decoration: none;
+      box-shadow: var(--sombra);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .card:active { transform: scale(0.97); box-shadow: 0 4px 12px rgba(0,0,0,0.10); }
+    .card:active::before { opacity: 1; }
+
+    /* Verde — Actividades */
+    .card-verde {
+      background: var(--verde-bg);
+      border: 3px solid var(--verde);
+    }
+    .card-verde::before { background: rgba(26,122,46,0.06); }
+
+    .card-verde .icon-wrap {
+      width: 88px; height: 88px;
+      background: var(--verde);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 20px rgba(26,122,46,0.4);
+    }
+
+    .card-verde .titulo { color: var(--verde); }
+    .card-verde .badge  { background: var(--verde); }
+
+    /* Naranja — Cosecha */
+    .card-naranja {
+      background: var(--naranja-bg);
+      border: 3px solid var(--naranja);
+    }
+    .card-naranja::before { background: rgba(212,88,10,0.06); }
+
+    .card-naranja .icon-wrap {
+      width: 88px; height: 88px;
+      background: var(--naranja);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 20px rgba(212,88,10,0.4);
+    }
+
+    .card-naranja .titulo { color: var(--naranja); }
+    .card-naranja .badge  { background: var(--naranja); }
+
+    .icon-wrap svg { width: 48px; height: 48px; fill: #fff; }
+
+    .titulo {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+    }
+
+    .desc {
+      font-size: 0.95rem;
+      color: #444;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 10px 28px;
+      border-radius: 50px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Morado — Polinización */
+    .card-morado {
+      background: #f5f0ff;
+      border: 3px solid #7c3aed;
+    }
+    .card-morado::before { background: rgba(124,58,237,0.06); }
+
+    .card-morado .icon-wrap {
+      width: 88px; height: 88px;
+      background: #7c3aed;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 20px rgba(124,58,237,0.4);
+    }
+
+    .card-morado .titulo { color: #7c3aed; }
+    .card-morado .badge  { background: #7c3aed; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 36px;
+      font-size: 0.78rem;
+      color: #aaa;
+      text-align: center;
+    }
+
+    /* Ripple animation on tap */
+    @keyframes ripple {
+      to { transform: scale(4); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <!-- Palma icon -->
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+        <path d="M32 56 Q32 38 32 28" stroke="#fff" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M32 28 Q18 22 10 12 Q20 18 32 28" fill="#fff"/>
+        <path d="M32 28 Q46 22 54 12 Q44 18 32 28" fill="#fff"/>
+        <path d="M32 34 Q20 30 14 20 Q24 28 32 34" fill="#fff"/>
+        <path d="M32 34 Q44 30 50 20 Q40 28 32 34" fill="#fff"/>
+        <ellipse cx="32" cy="57" rx="8" ry="3" fill="#fff" opacity="0.4"/>
+      </svg>
+    </div>
+    <h1>Hacienda Pantanal</h1>
+    <p>Portal de Reportes</p>
+  </header>
+
+  <div class="pregunta">
+    <h2>¿Qué vas a reportar hoy?</h2>
+    <span>Toca el botón que corresponde</span>
+  </div>
+
+  <div class="cards">
+
+    <!-- ACTIVIDADES -->
+    <a class="card card-verde"
+       href="https://ohjimenezpantanal.github.io/registro-campo/formulario_trabajador.html"
+       target="_blank" rel="noopener">
+      <div class="icon-wrap">
+        <!-- Clipboard / lista icon -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="10" width="36" height="44" rx="5" fill="none" stroke="#fff" stroke-width="4"/>
+          <rect x="24" y="6" width="16" height="8" rx="3" fill="#fff"/>
+          <line x1="22" y1="26" x2="42" y2="26" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="22" y1="34" x2="42" y2="34" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="22" y1="42" x2="34" y2="42" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="titulo">📋 Registro de Actividades</div>
+      <div class="desc">Chapia, corona, poda,<br>fertilización, jornal y más<br><strong>(para tu pago)</strong></div>
+      <div class="badge">IR AL FORMULARIO →</div>
+    </a>
+
+    <!-- POLINIZACIÓN -->
+    <a class="card card-morado"
+       href="https://ohjimenezpantanal.github.io/produccionpalma-app/polinizador.html"
+       target="_blank" rel="noopener">
+      <div class="icon-wrap">
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="28" r="10" fill="#fff"/>
+          <path d="M32 18 Q36 8 44 6 Q38 14 32 18" fill="#fff"/>
+          <path d="M32 18 Q28 8 20 6 Q26 14 32 18" fill="#fff"/>
+          <path d="M24 24 Q14 20 12 12 Q20 18 24 24" fill="#fff"/>
+          <path d="M40 24 Q50 20 52 12 Q44 18 40 24" fill="#fff"/>
+          <path d="M26 36 Q16 42 14 52 Q22 44 26 36" fill="#fff"/>
+          <path d="M38 36 Q48 42 50 52 Q42 44 38 36" fill="#fff"/>
+          <circle cx="32" cy="28" r="4" fill="#a855f7"/>
+        </svg>
+      </div>
+      <div class="titulo">🌸 Consumo ANA Polinización</div>
+      <div class="desc">Registra cuántos kg de ANA<br>utilizaste hoy y en qué lote</div>
+      <div class="badge">IR AL FORMULARIO →</div>
+    </a>
+
+    <!-- COSECHA -->
+    <a class="card card-naranja"
+       href="https://ohjimenezpantanal.github.io/produccionpalma-app/cosechero.html"
+       target="_blank" rel="noopener">
+      <div class="icon-wrap">
+        <!-- Racimo de palma aceitera con tallo -->
+        <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <!-- tallo principal -->
+          <line x1="32" y1="58" x2="32" y2="30" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+          <!-- racimo ovalado principal -->
+          <ellipse cx="32" cy="24" rx="14" ry="10" fill="#fff"/>
+          <!-- frutos pequeños encima -->
+          <circle cx="24" cy="20" r="4" fill="#fff" opacity="0.85"/>
+          <circle cx="32" cy="16" r="4.5" fill="#fff" opacity="0.9"/>
+          <circle cx="40" cy="20" r="4" fill="#fff" opacity="0.85"/>
+          <circle cx="28" cy="27" r="3.5" fill="#fff" opacity="0.8"/>
+          <circle cx="36" cy="27" r="3.5" fill="#fff" opacity="0.8"/>
+          <!-- pedúnculo -->
+          <path d="M32 34 Q28 42 26 50" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="titulo">🌴 Reporte de Racimos Cortados</div>
+      <div class="desc">Cantidad de racimos que cortaste<br>en la finca, lote, fecha<br>y datos de producción</div>
+      <div class="badge">IR AL FORMULARIO →</div>
+    </a>
+
+  </div>
+
+  <footer>
+    SAL · Quinindé, Esmeraldas · Ecuador
+  </footer>
+
+</body>
+</html>
